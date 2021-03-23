@@ -4,10 +4,9 @@ This file handles anything to do with the graphical user interface for the A* se
 '''
 
 import pygame
-import math
-import src.A_star_search
+import a_star
 
-class color(self):
+class color():
     '''
     A helpful enum for having color constants easily accessible. The constants store 
     the RGB codes for each color.
@@ -22,7 +21,7 @@ class color(self):
     PURPLE
     ORANGE
     GREY
-    TURQUISE
+    TURQUOISE
     '''
     def __init__(self):
         self.RED = (255, 0, 0);
@@ -34,7 +33,7 @@ class color(self):
         self.PURPLE = (128, 0, 128)
         self.ORANGE = (255, 165, 0)
         self.GREY = (128, 128, 128)
-        self.TURQUISE = (64, 224, 208)
+        self.TURQOUISE = (64, 224, 208)
 
 class GUI():
     def __init__(self):
