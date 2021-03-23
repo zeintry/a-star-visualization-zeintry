@@ -1,56 +1,80 @@
-#include <queue>
-#include <tuple>
-#include <set>
-#include <math>
+#include "math.h"
+#include <array>
+#include <chrono>
+#include <cstring>
 #include <iostream>
+#include <queue>
+#include <set>
 #include <stack>
-#include <vector>
+#include <tuple>
+using namespace std;
 
-typedef std::pair<int, int> Pair;
-typedef std::tuple<double, int, int> Tuple;
+// Creating a shortcut for int, int pair type
+typedef pair<int, int> Pair;
+// Creating a shortcut for tuple<int, int, int> type
+typedef tuple<double, int, int> Tuple;
 
-struct node
-{
-	Pair parent;
-
-	double f, g, h;
-	cell()
-		: parent(-1, -1)
-		, f(-1)
-		, g(-1)
-		, h(-1)
-	{}
+// A structure to hold the neccesary parameters
+struct cell {
+    // Row and Column index of its parent
+    Pair parent;
+    // f = g + h
+    double f, g, h;
+    cell()
+        : parent(-1, -1)
+        , f(-1)
+        , g(-1)
+        , h(-1)
+    {
+    }
 };
 
-template<size_t ROW, size_t COL>
-bool isValid(const int[ROW][COL] grid, const Pair& node)
-{
-	if (ROW > 0 && COL > 0)
-		return (node.first >= 0) && (node.first < ROW)
-			&& (node.second >= 0) && (node.second < COL)
-	return false;
-}
-
+// A Utility Function to check whether given cell (row, col)
+// is a valid cell or not.
 template <size_t ROW, size_t COL>
-bool isUnblocked(const int[ROW][COL] grid, const Pair& node)
-{
-	return isValid(grid, node) && grid[node.first][node.second] == 1;
+bool isValid(const array<array<int, COL>, ROW>& grid,
+    const Pair& point)
+{ // Returns true if row number and column number is in
+  // range
+    if (ROW > 0 && COL > 0)
+        return (point.first >= 0) && (point.first < ROW)
+        && (point.second >= 0)
+        && (point.second < COL);
+
+    return false;
 }
 
-bool isDestination(const Pair& node, const Pair& dest)
+// A Utility Function to check whether the given cell is
+// blocked or not
+template <size_t ROW, size_t COL>
+bool isUnBlocked(const array<array<int, COL>, ROW>& grid,
+    const Pair& point)
 {
-	return node == dest;
+    // Returns true if the cell is not blocked else false
+    return isValid(grid, point)
+        && grid[point.first][point.second] == 1;
 }
 
-double calcHValue(const Pair& src, const Pair& dest)
+// A Utility Function to check whether destination cell has
+// been reached or not
+bool isDestination(const Pair& position, const Pair& dest)
 {
-	return std::sqrt(std::pow(src.first - dest.first), 2) + 
-		std::pow(src.second - dest.second), 2));
+    return position == dest;
 }
 
+// A Utility Function to calculate the 'h' heuristics.
+double calculateHValue(const Pair& src, const Pair& dest)
+{
+    // h is estimated with the two points distance formula
+    return sqrt(pow((src.first - dest.first), 2.0)
+        + pow((src.second - dest.second), 2.0));
+}
+
+// A Utility Function to trace the path from the source to
+// destination
 template <size_t ROW, size_t COL>
 void tracePath(
-    const int[ROW][COL] cellDetails,
+    const array<array<cell, COL>, ROW>& cellDetails,
     const Pair& dest)
 {
     printf("\nThe Path is ");
@@ -75,8 +99,12 @@ void tracePath(
     }
 }
 
+// A Function to find the shortest path between a given
+// source cell to a destination cell according to A* Search
+// Algorithm
 template <size_t ROW, size_t COL>
-void aStarSearch(const int[ROW][COL] grid, const Pair& src, const Pair& dest)
+void aStarSearch(const array<array<int, COL>, ROW>& grid,
+    const Pair& src, const Pair& dest)
 {
     // If the source is out of range
     if (!isValid(grid, src)) {
@@ -103,32 +131,70 @@ void aStarSearch(const int[ROW][COL] grid, const Pair& src, const Pair& dest)
         return;
     }
 
+    // Create a closed list and initialise it to false which
+    // means that no cell has been included yet This closed
+    // list is implemented as a boolean 2D array
     bool closedList[ROW][COL];
-    std::memset(closedList, false, sizeof(closedList));
+    memset(closedList, false, sizeof(closedList));
 
-    int cellDetails[ROW][COL];
+    // Declare a 2D array of structure to hold the details
+    // of that cell
+    array<array<cell, COL>, ROW> cellDetails;
 
     int i, j;
-    i = src.first;
-    j = src.second;
+    // Initialising the parameters of the starting node
+    i = src.first, j = src.second;
     cellDetails[i][j].f = 0.0;
     cellDetails[i][j].g = 0.0;
     cellDetails[i][j].h = 0.0;
     cellDetails[i][j].parent = { i, j };
 
-    std::priority_queue<Tuple, std::vector<Tuple>, std::greater<Tuple>> openList;
+    /*
+    Create an open list having information as-
+    <f, <i, j>>
+    where f = g + h,
+    and i, j are the row and column index of that cell
+    Note that 0 <= i <= ROW-1 & 0 <= j <= COL-1
+    This open list is implenented as a set of tuple.*/
+    std::priority_queue<Tuple, std::vector<Tuple>,
+        std::greater<Tuple> >
+        openList;
+
+    // Put the starting cell on the open list and set its
+    // 'f' as 0
     openList.emplace(0.0, i, j);
 
-    while (!openList.empty())
-    {
+    // We set this boolean value as false as initially
+    // the destination is not reached.
+    while (!openList.empty()) {
         const Tuple& p = openList.top();
+        // Add this vertex to the closed list
+        i = get<1>(p); // second element of tupla
+        j = get<2>(p); // third element of tupla
 
-        i = get<1>(p);
-        j = get<2>(p);
-
+        // Remove this vertex from the open list
         openList.pop();
         closedList[i][j] = true;
+        /*
+                Generating all the 8 successor of this cell
+                        N.W N N.E
+                        \ | /
+                        \ | /
+                        W----Cell----E
+                                / | \
+                        / | \
+                        S.W S S.E
 
+                Cell-->Popped Cell (i, j)
+                N --> North     (i-1, j)
+                S --> South     (i+1, j)
+                E --> East     (i, j+1)
+                W --> West         (i, j-1)
+                N.E--> North-East (i-1, j+1)
+                N.W--> North-West (i-1, j-1)
+                S.E--> South-East (i+1, j+1)
+                S.W--> South-West (i+1, j-1)
+        */
         for (int add_x = -1; add_x <= 1; add_x++) {
             for (int add_y = -1; add_y <= 1; add_y++) {
                 Pair neighbour(i + add_x, j + add_y);
@@ -180,7 +246,7 @@ void aStarSearch(const int[ROW][COL] grid, const Pair& src, const Pair& dest)
                             || cellDetails[neighbour.first]
                             [neighbour.second]
                         .f
-                                   > fNew) {
+        > fNew) {
                             openList.emplace(
                                 fNew, neighbour.first,
                                 neighbour.second);
@@ -209,7 +275,15 @@ void aStarSearch(const int[ROW][COL] grid, const Pair& src, const Pair& dest)
             }
         }
     }
+
+    // When the destination cell is not found and the open
+    // list is empty, then we conclude that we failed to
+    // reach the destiantion cell. This may happen when the
+    // there is no way to destination cell (due to
+    // blockages)
+    printf("Failed to find the Destination Cell\n");
 }
+
 
 int main()
 {
