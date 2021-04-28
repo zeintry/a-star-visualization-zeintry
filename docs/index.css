@@ -1,0 +1,42 @@
+/*
+//----------------------------------------------------------------------
+// Name: Alan Poblette
+// File: index.css
+// Date: Spring 2021
+// Desc: A CSS style sheet to give index.html proper looks. Used in A* project.
+//----------------------------------------------------------------------
+*/
+
+/* The body of the html */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Affects the text on the page */
+#text {
+  position: absolute;
+  left: 50%;
+  padding: 1em;
+}
+
+/* Aligns all text in the webpage to the center */
+.App {
+    text-align: center;
+}
+
+/* Affects the main window panel that isn't the graph */
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}

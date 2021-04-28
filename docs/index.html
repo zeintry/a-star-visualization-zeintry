@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta
+            name="description"
+            content="Website for Alan's Semester Project in CPSC-450. Spring 2021."
+        />
+
+        <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+        
+        <script type="text/javascript" src="js/buttonFunctions/buttonFunctions.js"></script>
+        <script type="text/javascript" src="js/graphGeneration/random.js"></script>
+        <script type="text/javascript" src="js/graphGeneration/grid.js"></script>
+        <script type="text/javascript" src="js/dropdown/dropdown.js"></script>
+        <script type="text/javascript" src="js/astar/astar.js"></script>
+        
+        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="network/network.css">
+        <link rel="stylesheet" href="dropdown/dropdown.css">
+        <link rel="stylesheet" href="slider/slider.css">
+        <link rel="stylesheet" href="astar/astar.css">
+
+        <title>Alan's Semester Project</title>
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root">
+            <div class="App">
+                <header class="App-header">
+                    <div id="text">
+                        <div id="title">A* Visualization!</div>
+                        <div>By: Alan Poblette</div>
+                        
+                        <div id='dropdown-container' class="dropdown">
+                            <button onclick="handleDrop()" class="dropbtn">Select Graph</button>
+                            <div id="graphDropdown" class="dropdown-content">
+                                <a href="#default" onclick="initializeGraph()">Default Graph</a>
+                                <a href="#grid" onclick="drawGrid()">Grid</a>
+                                <a href="#random" onclick="drawRandom()">Random Graph</a>
+                            </div>
+                            <div></div>
+                            <label for="graphDropdown" id="dropdownLabel"></label>
+                        </div>
+
+                        <div id="nodeSelection">
+                            <div id="startNodeSelection">
+                                <button id="startNodeButton" onclick="selectStart()">Set Start Node</button>
+                            </div>
+                            <div id="endNodeSelection">
+                                <button id="endNodeButton" onclick="selectDestination()">Set Destination Node</button>
+                            </div>
+                        </div>
+
+                        <label for="myRange">Animation Speed:</label>
+                        <div class="slidecontainer">
+                            <input id="myRange" type="range" min="1" max="100" value="50">
+                        </div>
+                        <label for="myRange" id="sliderOutput"></label>
+                        <script type="text/javascript" src="js/slider/slider.js"></script>
+
+                        <div id="algorithmButton">
+                            <button onclick="astar()">Run A*</button>
+                        </div>
+                    </div>
+                </header>
+                <body>
+                    <div id="myGraph" class="networkStyle"></div>
+                    <script src="js/network/network.js"></script>
+                </body>
+            </div>
+        </div>
+    </body>
+</html>

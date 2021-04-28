@@ -1,0 +1,21 @@
+/*
+//----------------------------------------------------------------------
+// Name: Alan Poblette
+// File: network.css
+// Date: Spring 2021
+// Desc: A css stylesheet for network.js
+//----------------------------------------------------------------------
+*/
+
+.networkStyle{
+    width:"500px";
+    height:"500px";
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 50%;
+    min-height: 100vh;
+    border-right: 1px solid lightgray;
+    background: white;  
+}
