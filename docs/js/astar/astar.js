@@ -271,7 +271,7 @@ function animateEdgeColorFinal(curr, adj) {
         edgeIdString = adj+"-"+curr;
     }
     
-    edges.update([{id: edgeIdString, background: {enabled: true, color: 'green'}}]);
+    edges.update([{id: edgeIdString, background: {enabled: true, color: 'lime'}}]);
 }
 
 /* Function to rebuild the path using parent mappings */
