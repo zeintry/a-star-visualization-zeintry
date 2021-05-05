@@ -5,5 +5,8 @@ A* pathfinding was developed as a sort of extension to Dijkstra's algorithm. The
 There are many heuristic functions that could be used but for my implementation I simply used the manhattan distance of a node to the end node. 
 # Directions
 The visualization is easy to use, you simply select a start and end node, and then press the run button! The algorithm will visualize which nodes have been visited as it hones in on it's desired target.
+
 ## Options
 To make things more interesting, I decided to add in random graph generation to the visualizer on top of a grid graph, and the default graph I supplied. The different graphs can be selected from the dropdown menu.
+
+You can also control the speed of the animation using the slider provided.
